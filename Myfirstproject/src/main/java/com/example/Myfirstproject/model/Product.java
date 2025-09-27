@@ -23,9 +23,11 @@ public class Product {
 //    @Min(value = 1, message = "Quantity must be atleast 1")
 //    private int quantity;
 
-    // constructors
     public Product() {}
-    public Product(int i, String name, double price) {
+
+    // constructors
+    public Product(int id, String name, double price) {
+        this.id = id;
         this.name = name;
         this.price = price;
     }
@@ -39,7 +41,7 @@ public class Product {
 
     public double getPrice() { return price; }
     public void setPrice(double price) { this.price = price; }
-//
+
 //    public int getQuantity() { return quantity; }
 //    public void setQuantity(int quantity) { this.quantity = quantity; }
 }
