@@ -3,22 +3,29 @@
 package com.example.Myfirstproject.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "products")
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto-increment
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank(message = "Product name cannot be empty")
+    @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
     private String name;
 
+    @Min(value = 1, message = "Price must be at least 1")
     private double price;
+
+//    @Min(value = 1, message = "Quantity must be atleast 1")
+//    private int quantity;
 
     // constructors
     public Product() {}
-    public Product(String name, double price) {
+    public Product(int i, String name, double price) {
         this.name = name;
         this.price = price;
     }
@@ -32,9 +39,10 @@ public class Product {
 
     public double getPrice() { return price; }
     public void setPrice(double price) { this.price = price; }
+//
+//    public int getQuantity() { return quantity; }
+//    public void setQuantity(int quantity) { this.quantity = quantity; }
 }
-
-
 
 // Without Database --
 

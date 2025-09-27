@@ -2,13 +2,12 @@
 //
 package com.example.Myfirstproject.service;
 
+import com.example.Myfirstproject.exception.ResourceNotFoundException;
 import com.example.Myfirstproject.model.Product;
 import com.example.Myfirstproject.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -24,7 +23,8 @@ public class ProductService {
     }
 
     public Product getProductById(int id) {
-        return productRepository.findById(id).orElse(null);
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product with ID " + id + " not found"));
     }
 
     public Product createProduct(Product product) {
@@ -32,25 +32,21 @@ public class ProductService {
     }
 
     public Product updateProduct(int id, Product product) {
-        Optional<Product> existing = productRepository.findById(id);
-        if (existing.isPresent()) {
-            Product p = existing.get();
-            p.setName(product.getName());
-            p.setPrice(product.getPrice());
-            return productRepository.save(p);
-        }
-        return null;
+        Product existing = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product with ID " + id + " not found"));
+
+        existing.setName(product.getName());
+//        existing.setQuantity(product.getQuantity());
+        return productRepository.save(existing);
     }
 
-    public boolean deleteProduct(int id) {
-        if (productRepository.existsById(id)) {
-            productRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void deleteProduct(int id) {
+        Product existing = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product with ID " + id + " not found"));
+        productRepository.delete(existing);
     }
-
 }
+
 
 
 
