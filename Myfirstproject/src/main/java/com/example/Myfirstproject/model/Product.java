@@ -20,16 +20,20 @@ public class Product {
     @Min(value = 1, message = "Price must be at least 1")
     private double price;
 
-//    @Min(value = 1, message = "Quantity must be atleast 1")
-//    private int quantity;
+    @Min(value = 1, message = "Quantity must be atleast 1")
+    private int quantity;
+
+    private boolean available;
 
     public Product() {}
 
     // constructors
-    public Product(int id, String name, double price) {
+    public Product(int id, String name, double price, int quantity, boolean available) {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.quantity = quantity;
+        this.available = available;
     }
 
     // getters & setters
@@ -42,8 +46,16 @@ public class Product {
     public double getPrice() { return price; }
     public void setPrice(double price) { this.price = price; }
 
-//    public int getQuantity() { return quantity; }
-//    public void setQuantity(int quantity) { this.quantity = quantity; }
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
 }
 
 // Without Database --

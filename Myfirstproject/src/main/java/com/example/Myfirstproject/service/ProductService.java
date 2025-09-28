@@ -2,6 +2,8 @@
 //
 package com.example.Myfirstproject.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import com.example.Myfirstproject.exception.ResourceNotFoundException;
 import com.example.Myfirstproject.model.Product;
 import com.example.Myfirstproject.repository.ProductRepository;
@@ -36,7 +38,9 @@ public class ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product with ID " + id + " not found"));
 
         existing.setName(product.getName());
-//        existing.setQuantity(product.getQuantity());
+        existing.setQuantity(product.getQuantity());     // ✅ new field
+        existing.setAvailable(product.isAvailable());   // ✅ new field
+
         return productRepository.save(existing);
     }
 
@@ -44,6 +48,10 @@ public class ProductService {
         Product existing = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product with ID " + id + " not found"));
         productRepository.delete(existing);
+    }
+
+    public Page<Product> getProducts(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 }
 

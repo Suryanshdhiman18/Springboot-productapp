@@ -1,13 +1,12 @@
 package com.example.Myfirstproject.controller;
 
-import com.example.Myfirstproject.exception.ResourceNotFoundException;
 import com.example.Myfirstproject.model.Product;
 import com.example.Myfirstproject.service.ProductService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.validation.BindingResult;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -21,10 +20,10 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
-    }
+//    @GetMapping
+//    public List<Product> getAllProducts() {
+//        return productService.getAllProducts();
+//    }
 
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable int id) {
@@ -45,5 +44,29 @@ public class ProductController {
     public void deleteProduct(@PathVariable int id) {
         productService.deleteProduct(id); // exception if not found
     }
+
+//    @GetMapping
+//    public List<Product> getProducts(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size) {
+//        return productService.getProducts(PageRequest.of(page, size, Sort.by("id").ascending())).getContent();
+//    }
+
+    @GetMapping
+    public List<Product> getProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
+
+        Sort sort = direction.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        return productService.getProducts(PageRequest.of(page, size, sort)).getContent();
+    }
+
+
+
 }
 
