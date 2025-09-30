@@ -53,6 +53,23 @@ public class ProductService {
     public Page<Product> getProducts(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
+
+    public List<Product> filterProductsByPrice(int minPrice, int maxPrice) {
+        return productRepository.findByPriceBetween(minPrice, maxPrice);
+    }
+
+    public Product reduceStock(int id, int quantity) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
+
+        if (product.getQuantity() < quantity) {
+            throw new IllegalArgumentException("Not enough stock available");
+        }
+
+        product.setQuantity(product.getQuantity() - quantity);
+        return productRepository.save(product);
+    }
+
 }
 
 

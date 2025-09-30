@@ -5,8 +5,8 @@ import com.example.Myfirstproject.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -66,7 +66,17 @@ public class ProductController {
         return productService.getProducts(PageRequest.of(page, size, sort)).getContent();
     }
 
+    @GetMapping("/products")
+    public List<Product> filterProducts(
+            @RequestParam int minPrice,
+            @RequestParam int maxPrice) {
+        return productService.filterProductsByPrice(minPrice, maxPrice);
+    }
 
+    @PutMapping("/{id}/reduce")
+    public ResponseEntity<?> reduceStock(@PathVariable int id, @RequestParam int quantity) {
+        return ResponseEntity.ok(productService.reduceStock(id, quantity));
+    }
 
 }
 

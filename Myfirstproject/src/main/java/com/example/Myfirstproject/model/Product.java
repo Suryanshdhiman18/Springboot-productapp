@@ -20,6 +20,7 @@ public class Product {
     @Min(value = 1, message = "Price must be at least 1")
     private double price;
 
+    @NotNull(message = "Quantity is required")
     @Min(value = 1, message = "Quantity must be atleast 1")
     private int quantity;
 
