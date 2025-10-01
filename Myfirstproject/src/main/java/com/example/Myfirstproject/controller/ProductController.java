@@ -78,5 +78,10 @@ public class ProductController {
         return ResponseEntity.ok(productService.reduceStock(id, quantity));
     }
 
+    @PutMapping("/{id}/add")
+    public ResponseEntity<?> addStock(@PathVariable int id, @RequestParam int quantity) {
+        return ResponseEntity.ok(productService.addStock(id, quantity));
+    }
+
 }
 

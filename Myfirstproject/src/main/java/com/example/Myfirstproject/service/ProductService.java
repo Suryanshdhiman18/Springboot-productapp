@@ -70,6 +70,15 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    public Product addStock(int id, int quantity) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product with ID " + id + " not found"));
+
+        product.setQuantity(product.getQuantity() + quantity);
+        return productRepository.save(product);
+    }
+
+
 }
 
 
