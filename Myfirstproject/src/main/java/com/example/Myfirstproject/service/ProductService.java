@@ -58,26 +58,43 @@ public class ProductService {
         return productRepository.findByPriceBetween(minPrice, maxPrice);
     }
 
-    public Product reduceStock(int id, int quantity) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
+//    public Product reduceStock(int id, int quantity) {
+//        Product product = productRepository.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
+//
+//        if (product.getQuantity() < quantity) {
+//            throw new IllegalArgumentException("Not enough stock available");
+//        }
+//
+//        product.setQuantity(product.getQuantity() - quantity);
+//        return productRepository.save(product);
+//    }
+//
+//    public Product addStock(int id, int quantity) {
+//        Product product = productRepository.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("Product with ID " + id + " not found"));
+//
+//        product.setQuantity(product.getQuantity() + quantity);
+//        return productRepository.save(product);
+//    }
 
-        if (product.getQuantity() < quantity) {
-            throw new IllegalArgumentException("Not enough stock available");
-        }
-
-        product.setQuantity(product.getQuantity() - quantity);
-        return productRepository.save(product);
-    }
-
-    public Product addStock(int id, int quantity) {
+    public Product updateStock(int id, int quantity, String operation) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product with ID " + id + " not found"));
 
-        product.setQuantity(product.getQuantity() + quantity);
+        if ("add".equalsIgnoreCase(operation)) {
+            product.setQuantity(product.getQuantity() + quantity);
+        } else if ("reduce".equalsIgnoreCase(operation)) {
+            if (product.getQuantity() < quantity) {
+                throw new IllegalArgumentException("Not enough stock available to reduce");
+            }
+            product.setQuantity(product.getQuantity() - quantity);
+        } else {
+            throw new IllegalArgumentException("Invalid operation: must be 'add' or 'reduce'");
+        }
+
         return productRepository.save(product);
     }
-
 
 }
 

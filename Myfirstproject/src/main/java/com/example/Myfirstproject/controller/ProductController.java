@@ -73,15 +73,24 @@ public class ProductController {
         return productService.filterProductsByPrice(minPrice, maxPrice);
     }
 
-    @PutMapping("/{id}/reduce")
-    public ResponseEntity<?> reduceStock(@PathVariable int id, @RequestParam int quantity) {
-        return ResponseEntity.ok(productService.reduceStock(id, quantity));
+//    @PutMapping("/{id}/reduce")
+//    public ResponseEntity<?> reduceStock(@PathVariable int id, @RequestParam int quantity) {
+//        return ResponseEntity.ok(productService.reduceStock(id, quantity));
+//    }
+//
+//    @PutMapping("/{id}/add")
+//    public ResponseEntity<?> addStock(@PathVariable int id, @RequestParam int quantity) {
+//        return ResponseEntity.ok(productService.addStock(id, quantity));
+//    }
+
+    @PutMapping("/{id}/stock")
+    public ResponseEntity<?> updateStock(
+            @PathVariable int id,
+            @RequestParam int quantity,
+            @RequestParam String operation) {
+        return ResponseEntity.ok(productService.updateStock(id, quantity, operation));
     }
 
-    @PutMapping("/{id}/add")
-    public ResponseEntity<?> addStock(@PathVariable int id, @RequestParam int quantity) {
-        return ResponseEntity.ok(productService.addStock(id, quantity));
-    }
 
 }
 
